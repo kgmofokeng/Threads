@@ -3,8 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "nuka-carousel": "^2.0.4",
     "react": "^15.5.4",
-    "react-dom": "^15.5.4"
+    "react-dom": "^15.5.4",
+    "react-slick": "^0.14.11",
+    "slick-carousel": "^1.6.0"
   },
   "devDependencies": {
     "react-scripts": "1.0.7"
