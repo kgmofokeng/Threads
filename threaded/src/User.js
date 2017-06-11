@@ -1,7 +1,21 @@
 import React, { Component } from 'react';
 import * as ReactBootstrap from 'react-bootstrap';
+import * as firebase from 'firebase';
+import * as type from 'action-types';
 
 var Modal = ReactBootstrap.Modal;
+
+var config = {
+    apiKey: "AIzaSyC_P6AcxmFQgkkP3SpBoVFH7hpD1zlsNCE",
+    authDomain: "threaded-ab54f.firebaseapp.com",
+    databaseURL: "https://threaded-ab54f.firebaseio.com",
+    projectId: "threaded-ab54f",
+    storageBucket: "threaded-ab54f.appspot.com",
+    messagingSenderId: "909346088826"
+};
+firebase.initializeApp(config);
+
+var firebaseRef = firebase.database().ref();
 
 const   styles = ({
   spacerSmall: {
@@ -14,17 +28,24 @@ const   styles = ({
   }
 });
 
-
 export default class UserModal extends Component {
   constructor(props, context) {
     super(props, context);
 
     this.state = {
+      //Modal
         showModal: false,
         showLogin: false,
-        showRegister: false
+        showRegister: false,
+      //form
+        Name: ''
     };
 
+    //Form Handlers
+    this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+
+    //Modal functions
     this.open = this.open.bind(this);
     this.close = this.close.bind(this);
 
@@ -35,7 +56,20 @@ export default class UserModal extends Component {
     this.closeRegister = this.closeRegister.bind(this);
   }
 
+  //FORM
+  handleInputChange() {
+    console.log(document.getElementById('Name'));
+  }
 
+  handleSubmit() {
+    firebaseRef.child("USERS").child(document.getElementById('UserName').value).child("Name").set(document.getElementById('Name').value);  
+    firebaseRef.child("USERS").child(document.getElementById('UserName').value).child("LastName").set(document.getElementById('LastName').value);
+    firebaseRef.child("USERS").child(document.getElementById('UserName').value).child("Email").set(document.getElementById('Email').value);
+    firebaseRef.child("USERS").child(document.getElementById('UserName').value).child("password").set(document.getElementById('Password').value);
+    Event.preventDefault();
+  }
+
+  //MODAL
   open() {
     this.setState({showModal: true});
   }
@@ -96,8 +130,8 @@ export default class UserModal extends Component {
                     <Modal.Body>
                         <form>
                             <ReactBootstrap.FormGroup controlId="userName">
-                                <ReactBootstrap.ControlLabel>USERNAME</ReactBootstrap.ControlLabel>
-                                <ReactBootstrap.FormControl type="text" placeholder="USERNAME" />
+                                <ReactBootstrap.ControlLabel>EMAIL</ReactBootstrap.ControlLabel>
+                                <ReactBootstrap.FormControl type="text" placeholder="EMAIL" />
                             </ReactBootstrap.FormGroup>
 
                             <ReactBootstrap.FormGroup controlId="password">
@@ -105,14 +139,14 @@ export default class UserModal extends Component {
                                 <ReactBootstrap.FormControl type="text" placeholder="PASSWORD" />
                             </ReactBootstrap.FormGroup>
 
-                            <ReactBootstrap.Button type="submit">
+                            <ReactBootstrap.Button type="submit"  bsStyle={"success"}>
                                 Submit
                             </ReactBootstrap.Button>
                         </form>
                     </Modal.Body>
 
                     <Modal.Footer>
-                    <ReactBootstrap.Button onClick={this.closeLogin}>Close</ReactBootstrap.Button>
+                    <ReactBootstrap.Button onClick={this.closeLogin} bsStyle={"danger"}>Close</ReactBootstrap.Button>
                     </Modal.Footer>         
                 </Modal>
 
@@ -128,46 +162,68 @@ export default class UserModal extends Component {
                     </Modal.Header>
 
                     <Modal.Body>
-                        <form>
+                        <form onSubmit={this.handleSubmit}>
                             <ReactBootstrap.FormGroup controlId="Name">
                                 <ReactBootstrap.ControlLabel>NAME</ReactBootstrap.ControlLabel>
-                                <ReactBootstrap.FormControl type="text" placeholder="NAME" />
+                                <ReactBootstrap.FormControl
+                                  id="Name"
+                                  type="text" 
+                                  placeholder="NAME" />
                             </ReactBootstrap.FormGroup>
 
                             <ReactBootstrap.FormGroup controlId="lastName">
                                 <ReactBootstrap.ControlLabel>LAST NAME</ReactBootstrap.ControlLabel>
-                                <ReactBootstrap.FormControl type="text" placeholder="LAST NAME" />
+                                <ReactBootstrap.FormControl 
+                                  id="LastName"
+                                  type="text" 
+                                  placeholder="LAST NAME" />
                             </ReactBootstrap.FormGroup>
 
                             <ReactBootstrap.FormGroup controlId="userName">
                                 <ReactBootstrap.ControlLabel>USERNAME</ReactBootstrap.ControlLabel>
-                                <ReactBootstrap.FormControl type="text" placeholder="USERNAME" />
+                                <ReactBootstrap.FormControl 
+                                  id="UserName"
+                                  type="text"
+                                  placeholder="USERNAME" />
+                            </ReactBootstrap.FormGroup>
+
+                            <ReactBootstrap.FormGroup controlId="userName">
+                                <ReactBootstrap.ControlLabel>EMAIL</ReactBootstrap.ControlLabel>
+                                <ReactBootstrap.FormControl 
+                                  id="Email"
+                                  type="text" 
+                                  placeholder="EMAIL" />
                             </ReactBootstrap.FormGroup>
 
                             <ReactBootstrap.FormGroup controlId="password">
                                 <ReactBootstrap.ControlLabel>PASSWORD</ReactBootstrap.ControlLabel>
-                                <ReactBootstrap.FormControl type="text" placeholder="PASSWORD" />
+                                <ReactBootstrap.FormControl 
+                                  type="text" 
+                                  placeholder="PASSWORD" />
                             </ReactBootstrap.FormGroup>
 
                             <ReactBootstrap.FormGroup controlId="password">
                                 <ReactBootstrap.ControlLabel>RE-ENTER PASSWORD</ReactBootstrap.ControlLabel>
-                                <ReactBootstrap.FormControl type="text" placeholder="RE-ENTER PASSWORD" />
+                                <ReactBootstrap.FormControl
+                                  id="Password" 
+                                  type="text" 
+                                  placeholder="RE-ENTER PASSWORD" />
                             </ReactBootstrap.FormGroup>
 
-                            <ReactBootstrap.Button type="submit">
+                            <ReactBootstrap.Button type="submit" bsStyle={"success"}>
                                 Submit
                             </ReactBootstrap.Button>
                         </form>
                     </Modal.Body>
 
                     <Modal.Footer>
-                    <ReactBootstrap.Button onClick={this.closeRegister}>Close</ReactBootstrap.Button>
+                    <ReactBootstrap.Button onClick={this.closeRegister} bsStyle={"danger"}>Close</ReactBootstrap.Button>
                     </Modal.Footer>         
                 </Modal> 
             </Modal.Body>
 
             <Modal.Footer>
-              <ReactBootstrap.Button onClick={this.close}>Close</ReactBootstrap.Button>
+              <ReactBootstrap.Button onClick={this.close} bsStyle={"danger"}>Close</ReactBootstrap.Button>
             </Modal.Footer>         
           </Modal> 
         </div>

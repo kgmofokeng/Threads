@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import * as ReactBootstrap from 'react-bootstrap';
 
 var Modal = ReactBootstrap.Modal;
+var ImgUploader = require('./ImageUpload').default;
 
 const   styles = ({
   circularButton:{
@@ -9,6 +10,10 @@ const   styles = ({
     position: "fixed",
     bottom: 10,
     right: 35
+  },
+  textarea:{
+      resize: "none",
+      height: 200
   }
 });
 
@@ -52,12 +57,30 @@ export default class PostModal extends Component {
             </Modal.Header>
 
             <Modal.Body>
-              Body.........
+              <form>
+                    <ImgUploader/>
+                    <ReactBootstrap.FormGroup controlId="TOPIC">
+                        <ReactBootstrap.ControlLabel>TOPIC</ReactBootstrap.ControlLabel>
+                        <ReactBootstrap.FormControl type="text" placeholder="TOPIC" />
+                    </ReactBootstrap.FormGroup>
+
+                    <ReactBootstrap.FormGroup controlId="category">
+                        <ReactBootstrap.ControlLabel>CATEGORY</ReactBootstrap.ControlLabel>
+                        <ReactBootstrap.FormControl type="text" placeholder="#CATEGORY" />
+                    </ReactBootstrap.FormGroup>
+
+                    <ReactBootstrap.FormGroup controlId="category">
+                        <ReactBootstrap.FormControl componentClass="textarea" style={styles.textarea} />
+                    </ReactBootstrap.FormGroup>
+
+                    <ReactBootstrap.Button type="submit"  bsStyle={"success"}>
+                        Submit
+                    </ReactBootstrap.Button>
+                </form>
             </Modal.Body>
 
             <Modal.Footer>
-              <ReactBootstrap.Button onClick={this.close}>Close</ReactBootstrap.Button>
-              <ReactBootstrap.Button bsStyle="primary">POST</ReactBootstrap.Button>
+              <ReactBootstrap.Button onClick={this.close} bsStyle={"danger"}>Close</ReactBootstrap.Button>
             </Modal.Footer>         
           </Modal> 
         </div>
