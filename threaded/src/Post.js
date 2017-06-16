@@ -44,7 +44,6 @@ export default class PostModal extends Component {
         <ReactBootstrap.Button onClick={this.open} bsStyle="success" bsSize="small" style={styles.circularButton}>
           <ReactBootstrap.Glyphicon glyph="edit"/>
         </ReactBootstrap.Button>
-        {/*<ReactBootstrap.Button onClick={this.open}>Show Modal</ReactBootstrap.Button>*/}
         <div>
           <Modal className="modal-container" 
             show={this.state.showModal} 
@@ -57,26 +56,7 @@ export default class PostModal extends Component {
             </Modal.Header>
 
             <Modal.Body>
-              <form>
-                    <ImgUploader/>
-                    <ReactBootstrap.FormGroup controlId="TOPIC">
-                        <ReactBootstrap.ControlLabel>TOPIC</ReactBootstrap.ControlLabel>
-                        <ReactBootstrap.FormControl type="text" placeholder="TOPIC" />
-                    </ReactBootstrap.FormGroup>
-
-                    <ReactBootstrap.FormGroup controlId="category">
-                        <ReactBootstrap.ControlLabel>CATEGORY</ReactBootstrap.ControlLabel>
-                        <ReactBootstrap.FormControl type="text" placeholder="#CATEGORY" />
-                    </ReactBootstrap.FormGroup>
-
-                    <ReactBootstrap.FormGroup controlId="category">
-                        <ReactBootstrap.FormControl componentClass="textarea" style={styles.textarea} />
-                    </ReactBootstrap.FormGroup>
-
-                    <ReactBootstrap.Button type="submit"  bsStyle={"success"}>
-                        Submit
-                    </ReactBootstrap.Button>
-                </form>
+              <PostForm/>
             </Modal.Body>
 
             <Modal.Footer>
@@ -87,4 +67,45 @@ export default class PostModal extends Component {
       </div>
     );
   }
+}
+
+class   PostForm extends Component{
+    handleSubmit = (event) => {
+        event.preventDefault();
+ 
+        // Emulate async API call 
+        setTimeout(() => {
+            // NOTE: 'api' should be defined on 'extend' step 
+            this.form.showError('username', 'api');
+        }, 1000);
+    };
+ 
+    removeApiError = () => {
+        this.form.hideError('username');
+    };
+    
+    render(){
+      return (
+        <form>
+          <ImgUploader/>
+          <ReactBootstrap.FormGroup controlId="TOPIC">
+              <ReactBootstrap.ControlLabel>TOPIC</ReactBootstrap.ControlLabel>
+              <ReactBootstrap.FormControl type="text" placeholder="TOPIC" />
+          </ReactBootstrap.FormGroup>
+
+          <ReactBootstrap.FormGroup controlId="category">
+              <ReactBootstrap.ControlLabel>CATEGORY</ReactBootstrap.ControlLabel>
+              <ReactBootstrap.FormControl type="text" placeholder="#CATEGORY" />
+          </ReactBootstrap.FormGroup>
+
+          <ReactBootstrap.FormGroup controlId="category">
+              <ReactBootstrap.FormControl componentClass="textarea" style={styles.textarea} />
+          </ReactBootstrap.FormGroup>
+
+          <ReactBootstrap.Button type="submit"  bsStyle={"success"}>
+              Submit
+          </ReactBootstrap.Button>
+        </form>
+      );
+    }
 }

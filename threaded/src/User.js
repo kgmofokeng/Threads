@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import * as ReactBootstrap from 'react-bootstrap';
 import * as firebase from 'firebase';
-import * as type from 'action-types';
 
 var Modal = ReactBootstrap.Modal;
+var FirebaseAuth = require('./FirebaseAuth').default;
 
 var config = {
     apiKey: "AIzaSyC_P6AcxmFQgkkP3SpBoVFH7hpD1zlsNCE",
@@ -14,8 +14,10 @@ var config = {
     messagingSenderId: "909346088826"
 };
 firebase.initializeApp(config);
-
 var firebaseRef = firebase.database().ref();
+
+
+firebaseRef.on('value', snap => console.log(snap.val()));
 
 const   styles = ({
   spacerSmall: {
@@ -36,13 +38,10 @@ export default class UserModal extends Component {
       //Modal
         showModal: false,
         showLogin: false,
-        showRegister: false,
-      //form
-        Name: ''
+        showRegister: false
     };
 
     //Form Handlers
-    this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
 
     //Modal functions
@@ -57,9 +56,6 @@ export default class UserModal extends Component {
   }
 
   //FORM
-  handleInputChange() {
-    console.log(document.getElementById('Name'));
-  }
 
   handleSubmit() {
     firebaseRef.child("USERS").child(document.getElementById('UserName').value).child("Name").set(document.getElementById('Name').value);  
@@ -97,7 +93,7 @@ export default class UserModal extends Component {
   render() {
     return(
       <div>
-        <ReactBootstrap.Button onClick={this.open} bsStyle="normal" bsSize="small" style={styles.user}>
+        <ReactBootstrap.Button onClick={this.open} bsStyle="default" bsSize="small" style={styles.user}>
           <ReactBootstrap.Glyphicon glyph="user"/>
         </ReactBootstrap.Button>
         <div>
@@ -128,21 +124,22 @@ export default class UserModal extends Component {
                     </Modal.Header>
 
                     <Modal.Body>
-                        <form>
-                            <ReactBootstrap.FormGroup controlId="userName">
-                                <ReactBootstrap.ControlLabel>EMAIL</ReactBootstrap.ControlLabel>
-                                <ReactBootstrap.FormControl type="text" placeholder="EMAIL" />
-                            </ReactBootstrap.FormGroup>
+                      <form>
+                          <ReactBootstrap.FormGroup controlId="userName">
+                              <ReactBootstrap.ControlLabel>EMAIL</ReactBootstrap.ControlLabel>
+                              <ReactBootstrap.FormControl type="text" placeholder="EMAIL" />
+                          </ReactBootstrap.FormGroup>
 
-                            <ReactBootstrap.FormGroup controlId="password">
-                                <ReactBootstrap.ControlLabel>PASSWORD</ReactBootstrap.ControlLabel>
-                                <ReactBootstrap.FormControl type="text" placeholder="PASSWORD" />
-                            </ReactBootstrap.FormGroup>
+                          <ReactBootstrap.FormGroup controlId="password">
+                              <ReactBootstrap.ControlLabel>PASSWORD</ReactBootstrap.ControlLabel>
+                              <ReactBootstrap.FormControl type="text" placeholder="PASSWORD" />
+                          </ReactBootstrap.FormGroup>
 
-                            <ReactBootstrap.Button type="submit"  bsStyle={"success"}>
-                                Submit
-                            </ReactBootstrap.Button>
-                        </form>
+                          <ReactBootstrap.Button type="submit"  bsStyle={"success"}>
+                              Submit
+                          </ReactBootstrap.Button>
+                      </form>
+                      <FirebaseAuth/>
                     </Modal.Body>
 
                     <Modal.Footer>
